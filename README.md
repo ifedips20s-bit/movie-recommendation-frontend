@@ -1,87 +1,72 @@
-Movie Recommendation App – Project Nexus (ProDev FE)
+# Movie Recommendation App – Project Nexus (ProDev FE)
 
-A web, mobile, or PWA application for discovering trending movies and personalized recommendations.
+**A dynamic web application for discovering trending movies, exploring detailed pages, and saving personalized favorites.**  
 
-Overview
+This project demonstrates frontend best practices using modern frameworks, responsive design, API integration, and interactive UI/UX features.
 
-This project is a dynamic movie recommendation platform where users can:
+---
 
-Browse trending movies
+## Overview
+The **Movie Recommendation App** allows users to:  
 
-View detailed movie pages
+- Browse trending movies dynamically fetched from a public API  
+- View detailed information for individual movies  
+- Save favorite movies for later viewing (locally or via API)  
+- Experience a responsive and interactive UI across all devices  
 
-Save favorite movies for later
+This project highlights:  
 
-Enjoy a fully responsive, interactive UI
+- API integration and error handling  
+- Dynamic routing with Next.js  
+- Type-safe development with TypeScript  
+- Responsive, reusable, and interactive components  
 
-The app demonstrates:
+---
 
-API integration
+## Technologies Used
 
-Dynamic routing
+| Technology | Purpose |
+|------------|---------|
+| Next.js / React | Component-based UI and dynamic routing |
+| TypeScript | Type safety and scalable code |
+| Styled Components / Tailwind CSS | Modern, responsive UI styling |
+| Movie API | Fetch trending and recommended movies |
+| Redux / Context API | Optional: State management for favorites |
+| Vercel / Netlify | Deployment and public access |
 
-Type-safe and maintainable code with TypeScript
+---
 
-Responsive and engaging UI design
+## Key Features
 
-Technologies Used
+1. **API Integration**  
+   - Fetch trending and recommended movies dynamically  
+   - Loading and error states for smooth user experience  
 
-Next.js / React Native – Dynamic routing & component-based architecture
+2. **Dynamic Routing**  
+   - Individual movie detail pages with fast navigation  
 
-TypeScript – Type safety and scalable development
+3. **Favorites Management**  
+   - Save movies locally (or via backend API)  
+   - Access favorites from a dedicated dashboard  
 
-Styled Components / Tailwind CSS – UI styling and reusability
+4. **Responsive and Interactive UI**  
+   - Fully responsive design for desktop, tablet, and mobile  
+   - Smooth hover effects and animations for movie cards  
 
-Movie API – Dynamic data fetching for trending and recommended movies
+5. **Enhanced UX**  
+   - Intuitive navigation and user-friendly layout  
+   - Quick access to trending and recommended movies  
 
-Key Features
+---
 
-API Integration – Fetch trending/recommended movies with loading states and error handling
+## Implementation Process
 
-Dynamic Routing – Individual movie detail pages
-
-Favorites Management – Save movies locally or via backend API
-
-Responsive UI – Optimized for desktop, tablet, and mobile
-
-Interactive UX – Hover effects, smooth animations, and intuitive navigation
-
-Implementation Process
-
-Git Commit Workflow Example:
-
+**Git Commit Workflow Example:**
+```text
 feat: initialize Next.js project with TypeScript
-feat: integrate movie API for fetching trending movies
+feat: integrate Movie API for trending movies
 feat: implement dynamic movie detail pages
 feat: add favorites saving functionality
-style: design UI using Styled Components
+style: enhance UI using Styled Components / Tailwind CSS
 fix: resolve dynamic page rendering issues
 docs: add API setup and usage instructions
-
-Deployment
-
-Vercel / Netlify – Public access for demo and testing
-
-Evaluation Checklist
-
-Functionality: API fetching, dynamic pages, favorites feature
-
-Code Quality: Clean, modular, type-safe, and reusable components
-
-User Experience: Smooth navigation, animations, fully responsive
-
-Version Control: Regular, descriptive commits with organized repo structure
-
-Next Steps
-
-Finalize project structure and API integration
-
-Build dynamic movie pages with routing
-
-Implement favorites management
-
-Style UI and add animations
-
-Test responsiveness across devices
-
-Deploy and share your GitHub repo link
