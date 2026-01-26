@@ -1,72 +1,36 @@
-# Movie Recommendation App – Project Nexus (ProDev FE)
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-**A dynamic web application for discovering trending movies, exploring detailed pages, and saving personalized favorites.**  
+## Getting Started
 
-This project demonstrates frontend best practices using modern frameworks, responsive design, API integration, and interactive UI/UX features.
+First, run the development server:
 
----
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-## Overview
-The **Movie Recommendation App** allows users to:  
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-- Browse trending movies dynamically fetched from a public API  
-- View detailed information for individual movies  
-- Save favorite movies for later viewing (locally or via API)  
-- Experience a responsive and interactive UI across all devices  
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project highlights:  
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-- API integration and error handling  
-- Dynamic routing with Next.js  
-- Type-safe development with TypeScript  
-- Responsive, reusable, and interactive components  
+## Learn More
 
----
+To learn more about Next.js, take a look at the following resources:
 
-## Technologies Used
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-| Technology | Purpose |
-|------------|---------|
-| Next.js / React | Component-based UI and dynamic routing |
-| TypeScript | Type safety and scalable code |
-| Styled Components / Tailwind CSS | Modern, responsive UI styling |
-| Movie API | Fetch trending and recommended movies |
-| Redux / Context API | Optional: State management for favorites |
-| Vercel / Netlify | Deployment and public access |
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
----
+## Deploy on Vercel
 
-## Key Features
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-1. **API Integration**  
-   - Fetch trending and recommended movies dynamically  
-   - Loading and error states for smooth user experience  
-
-2. **Dynamic Routing**  
-   - Individual movie detail pages with fast navigation  
-
-3. **Favorites Management**  
-   - Save movies locally (or via backend API)  
-   - Access favorites from a dedicated dashboard  
-
-4. **Responsive and Interactive UI**  
-   - Fully responsive design for desktop, tablet, and mobile  
-   - Smooth hover effects and animations for movie cards  
-
-5. **Enhanced UX**  
-   - Intuitive navigation and user-friendly layout  
-   - Quick access to trending and recommended movies  
-
----
-
-## Implementation Process
-
-**Git Commit Workflow Example:**
-```text
-feat: initialize Next.js project with TypeScript
-feat: integrate Movie API for trending movies
-feat: implement dynamic movie detail pages
-feat: add favorites saving functionality
-style: enhance UI using Styled Components / Tailwind CSS
-fix: resolve dynamic page rendering issues
-docs: add API setup and usage instructions
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
