@@ -1,41 +1,46 @@
-import { useEffect, useState } from "react";
+import React from "react";
+import Head from "next/head";
 import styled from "styled-components";
-import MovieCard from "../components/MovieCard";
-import { getTrendingMovies } from "../services/movies";
+import MoviesDashboard from "../components/MoviesDashboard";
 
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 16px;
-  padding: 16px;
+const HomePage: React.FC = () => {
+  return (
+    <>
+      <Head>
+        <title>Movie Recommendations</title>
+        <meta name="description" content="Browse trending and recommended movies" />
+      </Head>
+
+      <Container>
+        <Header>
+          <h1>🎬 Movie Recommendation App</h1>
+          <p>Discover trending movies and save your favorites</p>
+        </Header>
+
+        <MoviesDashboard />
+      </Container>
+    </>
+  );
+};
+
+export default HomePage;
+
+/* ---------------- Styled Components ---------------- */
+
+const Container = styled.main`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
 `;
 
-export default function Home() {
-  const [movies, setMovies] = useState<any[]>([]);
+const Header = styled.header`
+  margin-bottom: 24px;
 
-  useEffect(() => {
-    const fetchMovies = async () => {
-      const data = await getTrendingMovies();
-      setMovies(data.results || []); // adjust based on your backend response
-    };
-    fetchMovies();
-  }, []);
+  h1 {
+    margin: 0;
+  }
 
-  return (
-    <div>
-      <h1>Trending Movies</h1>
-      <Grid>
-        {movies.map((movie) => (
-          <MovieCard
-            key={movie.id}
-            id={movie.id}
-            title={movie.title}
-            poster={movie.poster_path} // adjust if your backend returns full URL
-            rating={movie.rating}
-            onFavorite={(id) => console.log("Add to favorite:", id)}
-          />
-        ))}
-      </Grid>
-    </div>
-  );
-}
+  p {
+    color: #666;
+  }
+`;

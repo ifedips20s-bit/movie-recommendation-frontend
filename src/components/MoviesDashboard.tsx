@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import MovieCard from "./MovieCard";
 import { getTrendingMovies, addFavoriteMovie } from "../api/movieApi";
@@ -15,35 +15,37 @@ const MoviesDashboard: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Fetch trending movies on mount
   useEffect(() => {
     const fetchMovies = async () => {
       try {
         const data = await getTrendingMovies();
-        setMovies(data.results ?? data); // works for TMDB-style or custom backend
+        setMovies(data.results || []); // Adjust according to backend response
       } catch (err: any) {
-        setError(err.message || "Failed to load movies");
+        setError(err.message || "Failed to fetch movies");
       } finally {
         setLoading(false);
       }
     };
-
     fetchMovies();
   }, []);
 
-  const handleFavorite = async (movieId: number) => {
+  // Handle adding favorite
+  const handleFavorite = async (id: number) => {
     try {
-      await addFavoriteMovie(movieId);
+      await addFavoriteMovie(id);
       alert("Movie added to favorites!");
     } catch (err: any) {
-      alert(err.message || "Could not add to favorites");
+      alert(err.message || "Failed to add favorite movie");
     }
   };
 
-  if (loading) return <Status>Loading movies...</Status>;
-  if (error) return <Status>Error: {error}</Status>;
+  // Loading or Error States
+  if (loading) return <Message>Loading movies...</Message>;
+  if (error) return <Message>Error: {error}</Message>;
 
   return (
-    <Grid>
+    <Dashboard>
       {movies.map((movie) => (
         <MovieCard
           key={movie.id}
@@ -54,7 +56,7 @@ const MoviesDashboard: React.FC = () => {
           onFavorite={handleFavorite}
         />
       ))}
-    </Grid>
+    </Dashboard>
   );
 };
 
@@ -62,14 +64,21 @@ export default MoviesDashboard;
 
 /* ---------------- Styled Components ---------------- */
 
-const Grid = styled.div`
+const Dashboard = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 16px;
+  padding: 16px;
+
+  @media (max-width: 600px) {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+    padding: 12px;
+  }
 `;
 
-const Status = styled.p`
+const Message = styled.p`
   text-align: center;
-  font-size: 1rem;
-  padding: 20px;
+  font-size: 1.2rem;
+  margin-top: 40px;
 `;
