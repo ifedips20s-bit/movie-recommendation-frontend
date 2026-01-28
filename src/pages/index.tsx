@@ -1,9 +1,54 @@
-import React from "react";
+// pages/index.tsx
+import React, { useState } from "react";
 import Head from "next/head";
 import styled from "styled-components";
-import MoviesDashboard from "../components/MoviesDashboard";
+import MovieCard from "@/components/MovieCard";
+import { getTrendingMovies, addFavoriteMovie } from "@/services/movies";
 
-const HomePage: React.FC = () => {
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1rem;
+`;
+
+const Header = styled.header`
+  text-align: center;
+  margin-bottom: 24px;
+
+  h1 {
+    margin: 0;
+  }
+  p {
+    color: #666;
+  }
+`;
+
+interface Movie {
+  id: number;
+  title: string;
+  poster_path: string;
+  vote_average: number;
+}
+
+interface HomeProps {
+  initialMovies: Movie[];
+  totalPages: number;
+}
+
+const Home: React.FC<HomeProps> = ({ initialMovies, totalPages }) => {
+  const [movies, setMovies] = useState<Movie[]>(initialMovies);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleFavorite = async (id: number) => {
+    try {
+      await addFavoriteMovie(id);
+      alert("Added to favorites!");
+    } catch (err: any) {
+      alert(err.message || "Failed to add favorite");
+    }
+  };
+
   return (
     <>
       <Head>
@@ -11,36 +56,43 @@ const HomePage: React.FC = () => {
         <meta name="description" content="Browse trending and recommended movies" />
       </Head>
 
-      <Container>
-        <Header>
-          <h1>🎬 Movie Recommendation App</h1>
-          <p>Discover trending movies and save your favorites</p>
-        </Header>
+      <Header>
+        <h1>🎬 Movie Recommendation App</h1>
+        <p>Discover trending movies and save your favorites</p>
+      </Header>
 
-        <MoviesDashboard />
-      </Container>
+      {loading && <p>Loading movies...</p>}
+      {error && <p>Error: {error}</p>}
+
+      <Grid>
+        {movies.map((movie) => (
+          <MovieCard
+            key={movie.id}
+            id={movie.id}
+            title={movie.title}
+            poster={movie.poster_path}
+            rating={movie.vote_average}
+            onFavorite={handleFavorite}
+          />
+        ))}
+      </Grid>
     </>
   );
 };
 
-export default HomePage;
+export default Home;
 
-/* ---------------- Styled Components ---------------- */
-
-const Container = styled.main`
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 24px;
-`;
-
-const Header = styled.header`
-  margin-bottom: 24px;
-
-  h1 {
-    margin: 0;
+// SSR: Fetch trending movies server-side
+export const getServerSideProps = async () => {
+  try {
+    const data = await getTrendingMovies(1); // page 1
+    return {
+      props: {
+        initialMovies: data.results || [],
+        totalPages: data.total_pages || 1,
+      },
+    };
+  } catch (err) {
+    return { props: { initialMovies: [], totalPages: 1 } };
   }
-
-  p {
-    color: #666;
-  }
-`;
+};
