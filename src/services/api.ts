@@ -1,20 +1,15 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
+  baseURL: "http://127.0.0.1:8000/api",
 });
 
-export const getTrendingMovies = () =>
-  api.get("/movies/trending/");
-
-export const getRecommendedMovies = (token: string) =>
-  api.get("/movies/recommended/", {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-
-export const getFavorites = (token: string) =>
-  api.get("/movies/favorites/", {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("accessToken"); // or wherever you store JWT
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
 export default api;
