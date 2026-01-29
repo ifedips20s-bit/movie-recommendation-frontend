@@ -12,6 +12,7 @@ export const getMovieById = async (id: string) => {
   return res.data;
 };
 
+
 // Add favorite (JWT protected)
 export const addFavoriteMovie = async (movieId: number) => {
   const res = await api.post("/movies/favorites/", {
