@@ -43,11 +43,6 @@ const Message = styled.p`
   color: #666;
 `;
 
-const { darkMode, toggleTheme } = useTheme();
-<button onClick={toggleTheme}>
-  {darkMode ? "Light Mode" : "Dark Mode"}
-</button>
-
 
 const MoviesDashboard: React.FC = () => {
   const [movies, setMovies] = useState<any[]>([]);

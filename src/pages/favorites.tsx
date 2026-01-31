@@ -1,52 +1,44 @@
 // src/pages/favorites.tsx
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import MovieCard from "@/components/MovieCard";
-import { getFavoriteMovies } from "@/services/movies"; // ensure this uses JWT token internally
-import { useAuth } from "@/context/AuthContext";
+import { getFavoriteMovies, addFavoriteMovie } from "../api/movieApi";
+import MovieCard from "../components/MovieCard";
 
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 1.5rem;
-  margin-top: 20px;
-`;
-
-export default function FavoritesPage() {
-  const { token, isAuthenticated, logout } = useAuth();
+const FavoritesPage: React.FC = () => {
   const [movies, setMovies] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      setLoading(false);
-      return;
-    }
-
     const fetchFavorites = async () => {
       try {
-        const data = await getFavoriteMovies(token); // pass JWT
+        const data = await getFavoriteMovies(); // no token needed
         setMovies(data || []);
-      } catch (err) {
+      } catch (err: any) {
         setError("Failed to load favorites");
       } finally {
         setLoading(false);
       }
     };
-
     fetchFavorites();
-  }, [isAuthenticated, token]);
+  }, []);
 
-  if (!isAuthenticated) return <p>You must be logged in to view your favorites.</p>;
-  if (loading) return <p>Loading favorites…</p>;
-  if (error) return <p>{error}</p>;
-  if (movies.length === 0) return <p>You haven’t added any favorites yet.</p>;
+  const handleAddFavorite = async (id: number) => {
+    try {
+      await addFavoriteMovie(id);
+      alert("Added to favorites!");
+    } catch (err: any) {
+      alert(err.message || "Failed to add favorite");
+    }
+  };
+
+  if (loading) return <Message>Loading your favorite movies...</Message>;
+  if (error) return <Message>{error}</Message>;
+  if (movies.length === 0) return <Message>No favorites yet!</Message>;
 
   return (
-    <div>
-      <h1>Your Favorite Movies</h1>
-      <button onClick={logout} style={{ marginBottom: "16px" }}>Logout</button>
+    <Container>
+      <h2>Your Favorites</h2>
       <Grid>
         {movies.map((movie) => (
           <MovieCard
@@ -55,9 +47,30 @@ export default function FavoritesPage() {
             title={movie.title}
             poster={movie.poster_path}
             rating={movie.vote_average}
+            onFavorite={handleAddFavorite}
           />
         ))}
       </Grid>
-    </div>
+    </Container>
   );
-}
+};
+
+export default FavoritesPage;
+
+/* ---------------- Styled Components ---------------- */
+
+const Container = styled.div`
+  padding: 16px;
+`;
+
+const Grid = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+`;
+
+const Message = styled.p`
+  padding: 20px;
+  text-align: center;
+  font-size: 1rem;
+`;

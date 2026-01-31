@@ -1,13 +1,14 @@
-/** @type {import('next').NextConfig} */
 const withPWA = require("next-pwa")({
   dest: "public",
-  disable: process.env.NODE_ENV === "development", // PWA only enabled in production
+  disable: process.env.NODE_ENV === "development",
 });
 
 const nextConfig = withPWA({
   reactStrictMode: true,
-  webpack: (config, { isServer }) => {
-    // Keep your custom webpack modifications if any
+  // disable Turbopack completely
+  turbopack: false,
+  webpack: (config: any, { isServer }: { isServer: boolean }) => {
+    // keep default Webpack config
     return config;
   },
 });

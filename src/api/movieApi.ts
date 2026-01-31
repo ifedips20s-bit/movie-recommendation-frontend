@@ -12,6 +12,11 @@ export const getMovieById = async (id: string) => {
   return res.data;
 };
 
+// Favorites
+export const getFavoriteMovies = async () => {
+  const res = await api.get("/movies/favorites/"); // JWT handled in api interceptor
+  return res.data;
+};
 
 // Add favorite (JWT protected)
 export const addFavoriteMovie = async (movieId: number) => {
