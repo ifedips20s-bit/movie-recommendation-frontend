@@ -142,4 +142,4 @@ Movie rating and reviews functionality.
 Animations & micro-interactions for enhanced UX.
 
 Project Status: Complete ✅
-Demo & Live App: [https://movie-recommendation-frontend-mmia478r4.vercel.app]
+Demo & Live App: [https://movie-recommendation-frontend-3xx4w0kkb.vercel.app]

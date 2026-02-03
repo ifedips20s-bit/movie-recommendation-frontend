@@ -1,42 +1,54 @@
-import { useState } from "react";
-import api from "../services/api";
+import Link from "next/link";
+import styled from "styled-components";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
-const LoginPage = () => {
-  const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const Nav = styled.nav`
+  display: flex;
+  gap: 1.5rem;
+  padding: 1rem 2rem;
+  background-color: #1a1a1a;
+  color: white;
+`;
 
-  const handleLogin = async () => {
-    try {
-      const res = await api.post("/users/token/", { email, password });
-      // res.data contains access and refresh tokens
-      localStorage.setItem("access_token", res.data.access);
-      localStorage.setItem("refresh_token", res.data.refresh);
-      alert("Logged in successfully!");
-      router.push("/"); // redirect to dashboard
-    } catch (err) {
-      alert("Login failed. Check credentials.");
-    }
+export default function Navbar() {
+  const router = useRouter();
+  const [token, setToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Check if user is signed in
+    setToken(localStorage.getItem("access_token"));
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    setToken(null);
+    router.push("/"); // redirect to home after logout
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <input
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        placeholder="Password"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button onClick={handleLogin}>Login</button>
-    </div>
-  );
-};
+    <Nav>
+      <Link href="/">Home</Link>
+      <Link href="/favorites">Favorites</Link>
 
-export default LoginPage;
+      {!token ? (
+        <Link href="/login">Sign In</Link>
+      ) : (
+        <button
+          style={{
+            background: "none",
+            border: "1px solid white",
+            color: "white",
+            padding: "0.25rem 0.5rem",
+            borderRadius: "4px",
+            cursor: "pointer",
+          }}
+          onClick={handleLogout}
+        >
+          Logout
+        </button>
+      )}
+    </Nav>
+  );
+}
