@@ -1,7 +1,8 @@
+// src/components/MoviesDashboard.tsx
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import MovieCard from "./MovieCard";
-import { getTrendingMovies, getMovieBySearch, addFavoriteMovie } from "../services/movies"; // single import
+import { getTrendingMovies, getMovieBySearch, addFavoriteMovie } from "../services/movies";
 
 const Grid = styled.div`
   display: grid;
@@ -13,6 +14,7 @@ const Controls = styled.div`
   display: flex;
   gap: 1rem;
   margin-bottom: 1rem;
+  flex-wrap: wrap;
 `;
 
 const Button = styled.button`
@@ -43,7 +45,6 @@ const Message = styled.p`
   color: #666;
 `;
 
-
 const MoviesDashboard: React.FC = () => {
   const [movies, setMovies] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -61,11 +62,13 @@ const MoviesDashboard: React.FC = () => {
       } else {
         data = await getTrendingMovies(page);
       }
+
       setMovies(data.results || []);
       setTotalPages(data.total_pages || 1);
       setError("");
-    } catch {
-      setError("Failed to fetch movies.");
+    } catch (err: any) {
+      console.error(err);
+      setError("Failed to fetch movies. Check your API or login status.");
     } finally {
       setLoading(false);
     }
@@ -76,10 +79,17 @@ const MoviesDashboard: React.FC = () => {
   }, [search, page]);
 
   const handleFavorite = async (id: number) => {
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+      alert("You must be logged in to add favorites!");
+      return;
+    }
+
     try {
       await addFavoriteMovie(id);
       alert("Added to favorites!");
-    } catch {
+    } catch (err: any) {
+      console.error(err);
       alert("Failed to add favorite");
     }
   };
@@ -87,12 +97,16 @@ const MoviesDashboard: React.FC = () => {
   return (
     <div>
       <Title>Trending Movies</Title>
+
       <Controls>
         <Input
           type="text"
           placeholder="Search movies..."
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            setPage(1); // reset to first page when searching
+          }}
         />
         <Button onClick={() => setPage((p) => Math.max(p - 1, 1))}>Prev</Button>
         <Button onClick={() => setPage((p) => Math.min(p + 1, totalPages))}>Next</Button>
@@ -100,6 +114,8 @@ const MoviesDashboard: React.FC = () => {
 
       {loading && <Message>Loading movies...</Message>}
       {error && <Message>{error}</Message>}
+
+      {!loading && movies.length === 0 && <Message>No movies found.</Message>}
 
       <Grid>
         {movies.map((movie) => (
